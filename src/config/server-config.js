@@ -9,6 +9,7 @@ module.exports = {
     JWTEXPIRY: process.env.JWT_EXPIRY,
     SAFAR_SEAT_BLOCK_URL: process.env.SAFAR_SEAT_BLOCK_URL,
     SAFAR_SEAT_BOOK_URL: process.env.SAFAR_SEAT_BOOK_URL,
+    SAFAR_SEAT_RESET_URL: process.env.SAFAR_SEAT_RESET_URL,
     PAYMENT_GATEWAY_URL: process.env.PAYMENT_GATEWAY_URL,
     LCASH_API_KEY: process.env.LCASH_API_KEY,
 }

@@ -49,9 +49,9 @@ async function confirmBooking(data) {
         };
         // data.totalPrice = booking.totalPrice;
         // data.seatIds = booking.seatIds;
+        const payment = await ExternalService.paymentService(data);
         const bookingResponse = await BookingRepo.updateBooking({status:Enums.BOOKING_TYPE.SUCCESS},data.bookingId,transaction);
         const seatResponse = await ExternalService.bookSeats(data.seatIds);
-        const payment = await ExternalService.paymentService(data);
         await transaction.commit();
         return {
             status:true,
@@ -64,7 +64,24 @@ async function confirmBooking(data) {
     }
 }
 
+async function clearOldBookings() {
+    const transaction = await sequelize.transaction();
+    try {
+        const response = await BookingRepo.getOldBookings();
+        for(const booking of response){
+            await BookingRepo.clearOldBooking(booking.id,transaction);
+            await ExternalService.clearSeats(booking.seatIds);
+        }
+        await transaction.commit();
+        return true;
+    } catch (error) {
+        await transaction.rollback();
+        throw error;
+    }
+}
+
 module.exports = {
     createBooking,
     confirmBooking,
+    clearOldBookings,
 }

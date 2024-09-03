@@ -45,6 +45,26 @@ async function bookSeats(data) {
     }
 }
 
+async function clearSeats(data) {
+    const body = {
+        seatIds:data,
+    };
+    try {
+        const response = await axios.put(
+            server_config.SAFAR_SEAT_RESET_URL,
+            qs.stringify(body),
+            {
+                headers:{
+                    'Content-Type':'application/x-www-form-urlencoded'
+                }
+            }
+        );
+        return response;   
+    } catch (error) {
+        throw error;    
+    }
+}
+
 async function paymentService(data) {
     console.log(data);
     const body = {
@@ -70,8 +90,11 @@ async function paymentService(data) {
     }
 }
 
+
+
 module.exports = {
     blockSeats,
     bookSeats,
     paymentService,
+    clearSeats,
 }
